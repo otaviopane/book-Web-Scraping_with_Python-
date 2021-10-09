@@ -3,26 +3,21 @@ from urllib.error import HTTPError, URLError
 from bs4 import BeautifulSoup
 
 
-try:
-    html = urlopen('http://www.pythonscraping.com/pages/page1.html')
-except HTTPError as e:
-    print(e)
-except URLError as e:
-    print('The server could not be found!')
-    # devolve null, executa um break ou algum outro "Plano B"
-else:
-    # o programa continua. Nota: se você retornar ou executar um break no
-    # catch da exceção, não será necessário usar a instrução "else"
-    bs = BeautifulSoup(html, 'html.parser')
-    print(bs.html)
-    print('It worked!')
+def getTitle(url):
+    try:
+        html = urlopen(url)
+    except HTTPError as e:
+        return None
+    try:
+        bs = BeautifulSoup(html.read(), 'html.parser')
+        title = bs.body.h1
+    except AttributeError as e:
+        return None
+    return title
 
-try:
-    badContent = bs.nonExistingTag.anotherTag
-except AttributeError as e:
-    print('Tag was not found')
+
+title = getTitle('http://www.pythonscraping.com/pages/page1.html')
+if title == None:
+    print('Title could not be found')
 else:
-    if badContent == None:
-        print('Tag was not found')
-    else:
-        print(badContent)
+    print(title)
