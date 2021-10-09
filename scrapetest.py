@@ -16,3 +16,13 @@ else:
     bs = BeautifulSoup(html, 'html.parser')
     print(bs.html)
     print('It worked!')
+
+try:
+    badContent = bs.nonExistingTag.anotherTag
+except AttributeError as e:
+    print('Tag was not found')
+else:
+    if badContent == None:
+        print('Tag was not found')
+    else:
+        print(badContent)
